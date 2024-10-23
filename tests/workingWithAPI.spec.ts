@@ -1,5 +1,6 @@
 import {test, expect } from '@playwright/test'
 import tags from '../test-data/tags.json'
+import articles from '../test-data/articles.json'
 
 test.beforeEach(async({page}) => {
   // create a mock
@@ -8,6 +9,13 @@ test.beforeEach(async({page}) => {
         body: JSON.stringify(tags)
       })      
   })
+
+  await page.route('*/**/api/articles', async route => {
+    await route.fulfill({
+        body: JSON.stringify(articles)
+    })
+  })
+
   await page.goto('https://conduit.bondaracademy.com/')
   await page.waitForTimeout(1000)
 })
