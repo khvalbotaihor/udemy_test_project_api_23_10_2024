@@ -22,4 +22,6 @@ setup('authentication', async({request}) => {
 
     user.origins[0].localStorage[0].value = accessToken
     fs.writeFileSync(authFile, JSON.stringify(user))
+
+    process.env['ACCESS_TOKEN'] = accessToken
 })
