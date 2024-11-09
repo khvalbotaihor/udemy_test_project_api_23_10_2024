@@ -1,6 +1,5 @@
-import {test, expect, request } from '@playwright/test'
+import {test, expect } from '@playwright/test'
 import tags from '../test-data/tags.json'
-import articles from '../test-data/articles.json'
 
 test.beforeEach(async({page}) => {
   // create a mock
@@ -11,13 +10,6 @@ test.beforeEach(async({page}) => {
   })
 
   await page.goto('https://conduit.bondaracademy.com/')
-  await page.waitForTimeout(1000)
-
-  await page.getByText('Sign in').click()
-  await page.getByRole('textbox',{name: 'Email'}).fill('upqode.igor@gmail.com')
-  await page.getByRole('textbox', {name: 'Password'}).fill('upqode')
-  await page.getByRole('button', {name: 'Sign in'}).click()
-
 })
 
 
@@ -65,11 +57,17 @@ test('create and then delete articles', async ({page, request}) => {
   } )
   await expect(deleteFunction.status()).toBe(204)
   await page.waitForTimeout(500)
+})
 
+test('add one more article and then delete', async({page, request}) => {
+  const response = await request.post('https://conduit-api.bondaracademy.com/api/users/login',{
+    data: {"user":{"email":"upqode.igor@gmail.com","password":"upqode"}}
+  } )
+  const responseBody = await response.json()
+  const accessToken = responseBody.user.token
 
-  // add new note by post request and then delete this note manually
   const articleResponse2 = await request.post('https://conduit-api.bondaracademy.com/api/articles',{
-    data: {"article":{"title":"test23456","description":"about","body":"description","tagList":["tag1"]}},
+    data: {"article":{"title":"test234567","description":"about","body":"description","tagList":["tag1"]}},
     headers: {
       Authorization: `Token ${accessToken}`
     }
@@ -79,12 +77,13 @@ test('create and then delete articles', async ({page, request}) => {
   await page.getByText('Your Feed').click()
   await page.getByText('Global Feed').click()
 
-  await page.getByText('test23456').click()
+  await page.getByText('test234567').click()
   await page.getByRole('button', {name:' Delete Article'}).first().click()
-
-  const headers = await page.locator('article-page h1').allTextContents();
+  await expect(page.locator('app-article-preview h1').first()).toBeVisible()
+  const headers = await page.locator('app-article-preview h1').allTextContents();
+  await expect(headers.length).toBeGreaterThan(0)
   headers.forEach(text => {
-      expect(text).not.toContain('New Article');
+      expect(text).not.toContain('test234567');
   });
 })
 
@@ -106,7 +105,7 @@ test('create article', async ({page, request}) =>{
 
   await page.getByText('Home').click()
   await expect(page.locator('app-article-preview h1').first()).toContainText('title 222')
-//
+
   const loginResponse = await request.post('https://conduit-api.bondaracademy.com/api/users/login',{
     data: {"user":{"email":"upqode.igor@gmail.com","password":"upqode"}}
   } )
@@ -124,10 +123,10 @@ test('create article', async ({page, request}) =>{
 // check deleted item
   await page.getByText('Your Feed').click()
   await page.getByText('Global Feed').click()
-
-  const headers = await page.locator('article-page h1').allTextContents();
+  await expect(page.locator('app-article-preview h1').first()).toBeVisible()
+  const headers = await page.locator('app-article-preview h1').allTextContents();
+  await expect(headers.length).toBeGreaterThan(0)
   headers.forEach(text => {
       expect(text).not.toContain('title 222');
   });
-
 })
