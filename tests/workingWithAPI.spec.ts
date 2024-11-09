@@ -10,17 +10,6 @@ test.beforeEach(async({page}) => {
       })      
   })
 
-  // await page.route('*/**/api/articles?limit=10&offset=0', async route => {
-  //   const response = await route.fetch()
-  //   const responseBody = await response.json()
-  //   responseBody.articles[0].title = 'this is test title'
-  //   responseBody.articles[0].description = 'this is test description'
-
-  //   await route.fulfill({
-  //       body: JSON.stringify(responseBody)
-  //   })
-  // })
-
   await page.goto('https://conduit.bondaracademy.com/')
   await page.waitForTimeout(1000)
 
@@ -33,6 +22,17 @@ test.beforeEach(async({page}) => {
 
 
 test('check component presence', async ({page})=>{  
+  await page.route('*/**/api/articles?limit=10&offset=0', async route => {
+    const response = await route.fetch()
+    const responseBody = await response.json()
+    responseBody.articles[0].title = 'this is test title'
+    responseBody.articles[0].description = 'this is test description'
+
+    await route.fulfill({
+        body: JSON.stringify(responseBody)
+    })
+  })
+
   await expect(page.locator('.navbar-brand')).toBeVisible()
   await expect(page.locator('app-article-preview h1').first()).toContainText('this is test title')
 
