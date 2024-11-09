@@ -79,6 +79,9 @@ test('add one more article and then delete', async({page, request}) => {
 
   await page.getByText('test234567').click()
   await page.getByRole('button', {name:' Delete Article'}).first().click()
+  await page.waitForResponse(response => 
+    response.url().includes('/api/articles') && response.status() === 200
+  );
   await expect(page.locator('app-article-preview h1').first()).toBeVisible()
   const headers = await page.locator('app-article-preview h1').allTextContents();
   await expect(headers.length).toBeGreaterThan(0)
@@ -123,6 +126,9 @@ test('create article', async ({page, request}) =>{
 // check deleted item
   await page.getByText('Your Feed').click()
   await page.getByText('Global Feed').click()
+  await page.waitForResponse(response => 
+    response.url().includes('/api/articles') && response.status() === 200
+  );
   await expect(page.locator('app-article-preview h1').first()).toBeVisible()
   const headers = await page.locator('app-article-preview h1').allTextContents();
   await expect(headers.length).toBeGreaterThan(0)
