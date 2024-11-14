@@ -41,10 +41,16 @@ export default defineConfig({
     { 
       name: 'articleSetup', 
       testMatch: 'newArticle.setup.ts',
-      dependencies: ['setup']
+      dependencies: ['setup'],
+      teardown: 'articleCleanUp'
+    },
+    {
+      name: 'articleCleanUp',
+      testMatch: 'articleCleanUp.setup.ts'
     },
     {
       name: 'regression',
+      testMatch: ['!likesCounter.spec.ts'],
       use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
       dependencies: ['setup']
     },
@@ -53,6 +59,6 @@ export default defineConfig({
       testMatch: 'likesCounter.spec.ts',
       use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
       dependencies: ['articleSetup']
-    },
+    }
   ]
 });
