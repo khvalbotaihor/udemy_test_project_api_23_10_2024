@@ -50,7 +50,8 @@ export default defineConfig({
     },
     {
       name: 'regression',
-      testMatch: ['!likesCounter.spec.ts'],
+      testIgnore: 'likesCounter.spec.ts',
+      testMatch: ['!likesCounterGlobal.spec.ts'],
       use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
       dependencies: ['setup']
     },
@@ -59,6 +60,13 @@ export default defineConfig({
       testMatch: 'likesCounter.spec.ts',
       use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
       dependencies: ['articleSetup']
+    },
+    {
+      name: 'likesCounterGlobal',
+      testMatch: 'likesCounterGlobal.spec.ts',
+      use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
+      dependencies: ['articleSetup']
     }
+
   ]
 });
