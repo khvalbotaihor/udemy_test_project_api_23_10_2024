@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  api-test: 
+    image: api-test
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run likesCounter
+    volumes: 
+      - ./playwright-report/:/app/playwright-report
+      - ./test-results/:/app/test-results

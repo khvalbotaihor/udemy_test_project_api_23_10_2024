@@ -2,7 +2,9 @@
   "name": "udemy_test_project_api_23_10_2024",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "likesCounter": "npx playwright test likesCounter.spec.ts --project=likesCounter"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

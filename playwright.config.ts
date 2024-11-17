@@ -61,8 +61,14 @@ export default defineConfig({
     {
       name: 'likesCounter',
       testMatch: 'likesCounter.spec.ts',
-      use: { ...devices['Desktop Chrome'], storageState: './auth/user.json' },
-      dependencies: ['articleSetup']
+      use: { 
+        ...devices['Desktop Chrome'], 
+        storageState: './auth/user.json',
+        video: 'on',
+        screenshot: 'on'
+       },
+      dependencies: ['articleSetup'],
+      
     },
     {
       name: 'likesCounterGlobal',
@@ -70,6 +76,8 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], storageState: './auth/user.json', video: 'on' },
     
     }
-
-  ]
+  ],
+  webServer: {
+    command: 'npm run start',
+  }
 });
