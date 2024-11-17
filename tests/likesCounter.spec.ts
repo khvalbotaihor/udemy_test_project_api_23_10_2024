@@ -7,7 +7,7 @@ test('Like counter', async({page})=>{
     const firstLikeButton = page.locator('app-article-preview').first().locator('button')
     await expect(firstLikeButton).toContainText('0', { timeout: 5000 })
     await argosScreenshot(page, "not marked like button");
-    await firstLikeButton.click()
+    //await firstLikeButton.click()
     await argosScreenshot(page, "marked like button");
     await expect(firstLikeButton).toContainText('1' ,{ timeout: 5000 })
 })
