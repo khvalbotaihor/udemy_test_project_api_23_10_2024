@@ -29,7 +29,7 @@ export default defineConfig({
       {
         // Upload to Argos on CI only.
         uploadToArgos: !!process.env.CI,
-        token: "ARGOS_TOKEN=77d806cfc0014e0df35525fc7edd6d51b9053ec6",
+        token: "77d806cfc0014e0df35525fc7edd6d51b9053ec6",
       },]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
